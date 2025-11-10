@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Pick&Roll</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <script defer src="js/archive.js"></script>
+</head>
+<body class="theme">
+  <header class="site-header">
+<img src="img/로고타임.png" alt="Pick&Roll 로고" class="logo-img" />
+    <nav class="nav">
+      <a href="index.html">MAIN</a>
+      <a href="sub1.html">PICK</a>
+      <a class="active" href="sub2.html">ROLL</a>
+    </nav>
+  </header>
+
+  <main class="archive-main">
+    <div class="archive-header">
+  <h1>Recipe Archive</h1>
+  <button id="filterToggle" class="filter-btn" aria-pressed="false">필터 적용하기</button>
+</div>
+    <p class="archive-desc">MINI GAME에서 저장한 완성본들을 기록하는 페이지 입니다.</p>
+
+    <div id="archiveGrid" class="archive-grid" aria-label="저장된 레시피 목록">
+      <!-- JS에서 카드 렌더링 -->
+    </div>
+
+    <!-- 폴더 클릭시 팝업 -->
+    <div id="archiveModal" class="modal" aria-hidden="true">
+      <div class="modal-backdrop"></div>
+      <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="arcTitle">
+        <button class="modal-close" id="arcClose" aria-label="닫기">×</button>
+        <h3 id="arcTitle">레시피 상세</h3>
+        <img id="arcImage" class="arc-image" alt="완성 썸네일"/>
+        <div class="ingredients-list-wrap">
+          <h4>속재료 리스트</h4>
+          <ul id="arcIngredients" class="ingredients-list"></ul>
+        </div>
+        <div class="modal-actions">
+          <button id="arcDelete" class="ghost-btn">이 레시피 삭제</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="arcPopup" class="arc-popup" aria-hidden="true">
+  <div class="arc-popup-inner">
+    <button id="arcClose" class="arc-close">×</button>
+    
+    <!-- ✅ 스크롤 가능하게 할 부분 -->
+    <div class="arc-content-scroll">
+      <h2 id="arcTitle">레시피 이름</h2>
+      <img id="arcImage" class="arc-image" alt="썸네일" />
+      <h3>재료</h3>
+      <p id="arcIngs">...</p>
+      <h3>순서</h3>
+      <p id="arcSteps">...</p>
+    </div>
+    
+  </div>
+</div>
+
+    <!-- 필터 모달 -->
+<div id="filterModal" class="modal" aria-hidden="true">
+  <div class="modal-backdrop"></div>
+  <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="filterTitle">
+    <button class="modal-close" id="filterClose" aria-label="닫기">×</button>
+    <h3 id="filterTitle">필터 선택</h3>
+    <p class="modal-note">밥은 별도로 선택 가능, 속재료는 최대 3개까지 선택할 수 있어요.</p>
+
+    <!-- 밥 선택 -->
+    <div class="filter-section">
+      <h4 class="filter-subtitle">밥</h4>
+      <div class="filter-grid two">
+        <!-- 체크박스 + 라벨(라벨이 버튼처럼 동작, 텍스트 클릭 가능) -->
+        <input type="checkbox" id="rice-white" class="chip-check" hidden>
+        <label for="rice-white" class="chip-select">쌀밥</label>
+
+        <input type="checkbox" id="rice-brown" class="chip-check" hidden>
+        <label for="rice-brown" class="chip-select">현미밥</label>
+      </div>
+    </div>
+
+    <!-- 속재료 선택 (최대 3개) -->
+    <div class="filter-section">
+      <h4 class="filter-subtitle">속재료 (최대 3개)</h4>
+      <div class="filter-grid three" id="ingFilterGrid">
+        <input type="checkbox" id="ing-egg" class="chip-check" data-ing="egg" hidden>
+        <label for="ing-egg" class="chip-select">계란말이</label>
+
+        <input type="checkbox" id="ing-lotus" class="chip-check" data-ing="lotus" hidden>
+        <label for="ing-lotus" class="chip-select">연근</label>
+
+        <input type="checkbox" id="ing-carrot" class="chip-check" data-ing="carrot" hidden>
+        <label for="ing-carrot" class="chip-select">당근</label>
+
+        <input type="checkbox" id="ing-crab" class="chip-check" data-ing="crab" hidden>
+        <label for="ing-crab" class="chip-select">게맛살</label>
+
+        <input type="checkbox" id="ing-sausage" class="chip-check" data-ing="sausage" hidden>
+        <label for="ing-sausage" class="chip-select">소시지</label>
+
+        <input type="checkbox" id="ing-cucumber" class="chip-check" data-ing="cucumber" hidden>
+        <label for="ing-cucumber" class="chip-select">오이</label>
+
+        <input type="checkbox" id="ing-bulgogi" class="chip-check" data-ing="bulgogi" hidden>
+        <label for="ing-bulgogi" class="chip-select">불고기</label>
+
+        <input type="checkbox" id="ing-fishcake" class="chip-check" data-ing="fishcake" hidden>
+        <label for="ing-fishcake" class="chip-select">어묵</label>
+
+        <input type="checkbox" id="ing-pickled" class="chip-check" data-ing="pickled" hidden>
+        <label for="ing-pickled" class="chip-select">단무지</label>
+      </div>
+    </div>
+
+    <div class="modal-actions" style="display:flex; gap:8px; justify-content:flex-end">
+      <button id="filterReset" class="ghost-btn">초기화</button>
+      <button id="filterApply" class="solid-btn">적용</button>
+    </div>
+  </div>
+</div>
+
+  </main>
+</body>
+</html>
