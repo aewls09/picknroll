@@ -51,18 +51,24 @@ btnDone.addEventListener('click', () => {
 });
 
 function renderButtons() {
-  grid.innerHTML = '';
+grid.innerHTML = '';
   INGREDIENTS.forEach(ing => {
     const btn = document.createElement('button');
     btn.className = 'ing-btn';
 
+    // 이미지
     const img = document.createElement('img');
+    img.src = ing.img;
     img.alt = ing.label;
-    img.src = ing.img;     // ✅ 실제 이미지 사용
+
+    // ✅ 레이블 요소 추가
+    const label = document.createElement('div');
+    label.className = 'ingredient-label';
+    label.innerText = ing.label;
 
     btn.appendChild(img);
+    btn.appendChild(label);
 
-    // 버튼 클릭 시 랜덤 위치로 재료 추가
     btn.addEventListener('click', () => addLayer(ing));
     grid.appendChild(btn);
   });
@@ -73,34 +79,24 @@ function addLayer(ing) {
   const H = stackEl.clientHeight;
   const W = stackEl.clientWidth;
 
-  // 밥 타원의 중심과 반경 비율 (builder.js 상단 정의 참고)
-  const cx = W / 2;                   // 타원 중심 X
-  const cy = H * ELLIPSE.cyRatio;     // 타원 중심 Y
-  const rx = W * 0.4;                 // 타원 가로 반경 (김 안쪽 정도)
-  const ry = H * ELLIPSE.ryRatio;     // 타원 세로 반경
+  const cx = W / 2; // 중심 X
+  const cy = H / 2; // 중심 Y
 
   const img = document.createElement('img');
-  img.src = ing.img;                  // 버튼과 같은 이미지
+  img.src = ing.img;
   img.alt = ing.label;
   img.className = 'ingredient-img';
   img.style.position = 'absolute';
-  img.style.width = '60px';
-  img.style.height = '60px';
+  img.style.width = '100px';
+  img.style.height = '100px';
   img.style.pointerEvents = 'none';
+  
+const angleDeg = 25 * layerCount; // 시계 방향 회전 각도
+const angleRad = angleDeg * (Math.PI / 180);
+const radius = 70; // ✅ 고정 반지름: 완전히 겹치진 않게 약간만 벌림
 
-  // === ✅ 밥 타원 안 랜덤 좌표 구하기 ===
-  let x, y;
-  for (let i = 0; i < 100; i++) { // 최대 100번 시도
-    const randX = (Math.random() * 2 - 1) * rx;
-    const randY = (Math.random() * 2 - 1) * ry;
-
-    // 타원 방정식 x²/rx² + y²/ry² <= 1 인 경우만 통과
-    if ((randX * randX) / (rx * rx) + (randY * randY) / (ry * ry) <= 1) {
-      x = cx + randX - 30; // 이미지 중심 고려 (60px/2)
-      y = cy + randY - 30;
-      break;
-    }
-  }
+  const x = cx + radius * Math.cos(angleRad) - 40;
+  const y = cy + radius * Math.sin(angleRad) - 40;
 
   img.style.left = `${x}px`;
   img.style.top = `${y}px`;
@@ -268,10 +264,16 @@ const RICE_COLORS = {
   white: '#f3f4f6',   // 기존 흰쌀밥
   brown: '#e7d8b8'    // 잡곡/현미 톤
 }
-function applyRiceColor(type){
+function applyRiceColor(type) {
   riceType = type;
-  // 스테이지 SVG나 stage 컨테이너에 변수 세팅(둘 중 하나 선택)
-  const stage = document.querySelector('.stage'); // 또는 .stage-base / .stage-svg
-  (stage || document.documentElement)
-    .style.setProperty('--rice-fill', RICE_COLORS[type]);
+
+  const riceBg = document.getElementById('riceBackground');
+
+  if (riceBg) {
+    if (type === 'white') {
+      riceBg.src = 'img/bab.png.png';
+    } else if (type === 'brown') {
+      riceBg.src = 'img/bab2.png.png';
+    }
+  }
 }

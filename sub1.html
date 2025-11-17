@@ -23,15 +23,11 @@
       <button class="ghost-btn reset-btn" id="btnReset" aria-label="Reset">Reset</button>   
 
       <!-- 베이스: 김 + 밥 (SVG) -->
-      <div class="stage-base">
-        <svg viewBox="0 0 400 280" class="stage-svg" aria-label="김 위에 밥만 있는 김밥">
-          <rect x="40" y="60" width="320" height="160" rx="24" class="svg-seaweed"/>
-          <ellipse cx="200" cy="140" rx="160" ry="70" class="svg-rice"/>
-        </svg>
-        <!-- 재료가 쌓일 컨테이너 -->
-        <div id="stack" class="stack"></div>
-      </div>
-      <p class="hint">원하는 재료 버튼을 오른쪽에서 클릭하세요. 같은 재료도 여러 번 쌓을 수 있어요.</p>
+  <div class="stage-base">
+    <img id="riceBackground" src="img/bab.png.png" alt="밥 배경" class="stage-bg" />
+    <div id="stack" class="stack"></div>
+  </div>
+    <p class="hint">원하는 재료 버튼을 오른쪽에서 클릭하세요. 같은 재료도 여러 번 쌓을 수 있어요.</p>
     </section>
 
 <aside class="ingredients-panel">
