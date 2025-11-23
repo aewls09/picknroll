@@ -6,6 +6,9 @@
   <title>Pick&Roll</title>
   <link rel="stylesheet" href="css/style.css"/>
   <script defer src="js/archive.js"></script>
+  <style>
+    .p { padding: 0 80px; }
+  </style>
 </head>
 <body class="theme">
   <header class="site-header">
@@ -34,7 +37,7 @@
       <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="arcTitle">
         <button class="modal-close" id="arcClose" aria-label="닫기">×</button>
         <h3 id="arcTitle">레시피 상세</h3>
-        <img id="arcImage" class="arc-image" alt="완성 썸네일"/>
+<img id="arcImage" class="arc-image" alt="완성 썸네일"/>
         <div class="ingredients-list-wrap">
           <h4>속재료 리스트</h4>
           <ul id="arcIngredients" class="ingredients-list"></ul>
@@ -43,22 +46,7 @@
           <button id="arcDelete" class="ghost-btn">이 레시피 삭제</button>
         </div>
       </div>
-    </div>
-
-    <div id="arcPopup" class="arc-popup" aria-hidden="true">
-  <div class="arc-popup-inner">
-    <button id="arcClose" class="arc-close">×</button>
-    
-    <!-- ✅ 스크롤 가능하게 할 부분 -->
-    <div class="arc-content-scroll">
-      <h2 id="arcTitle">레시피 이름</h2>
-      <img id="arcImage" class="arc-image" alt="썸네일" />
-      <h3>재료</h3>
-      <p id="arcIngs">...</p>
-      <h3>순서</h3>
-      <p id="arcSteps">...</p>
-    </div>
-    
+    </div>    
   </div>
 </div>
 
