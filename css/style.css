@@ -23,13 +23,15 @@ body.theme{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 40px;  /* 여백 조정 */
-  background-color: #fff; /* 필요시 배경 지정 */
-  position: relative;
-  z-index: 100;        /* 다른 요소 위에 표시 */
+  padding: 16px 100px;
+  background-color: #fff;
+  position: fixed;
+  z-index: 1000;
+  width: 100%;
+  margin: 0 auto;      /* 가운데 정렬 */
 }
 .logo-img {
-  height: 12px;        /* 원하는 크기로 조정 (예: 40~60px 정도) */
+  height: 15px;        /* 원하는 크기로 조정 (예: 40~60px 정도) */
   width: auto;
   display: block;
 }
@@ -41,8 +43,7 @@ body.theme{
 
 /* Scroll Snap (Main) */
 .snap-container{
-  height:100vh; overflow-y:scroll; scroll-snap-type:y mandatory;
-  scroll-behavior:smooth;
+  height:100vh;
 }
 .snap-section{
   height:100vh; scroll-snap-align:start; position:relative;
@@ -57,7 +58,7 @@ body.theme{
 /* Intro 배경 비디오 */
 .intro-wrap {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   position: relative;
   overflow: hidden;
   display: flex;               /* ✅ 가운데 정렬을 위해 추가 */
@@ -109,12 +110,35 @@ body.theme{
   top: -20%;
   left: 0;
   width: 100%;
-  opacity: 0;
+  opacity: 0;                          /* 처음엔 안 보이다가 drop에서 보이게 */
   transform: translateY(-50px) scaleY(1);
+  transform-origin: top;
+}
+
+/* 처음 진입했을 때 1회 실행되는 애니메이션 */
+.logo-hand.is-initial {
   animation:
     handDrop 1s ease 1.2s forwards,
     handStretchOnce 0.8s ease-in-out 2.4s 2;
-  transform-origin: top; /* ✅ 아래로 늘어나게 설정 */
+}
+/* 이후에 계속 반복될 애니메이션 */
+.logo-hand.is-loop {
+  opacity: 1;                             /* 계속 보이게 */
+  transform: translateY(0) scaleY(1);     /* 화면 안 기본 위치 */
+  animation: handStretchLoop 1s ease-in-out;
+}
+
+/* 반복용 keyframes (필요 시 조정 가능) */
+@keyframes handStretchLoop {
+  0% {
+    transform: translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateY(0) scaleY(1.25);   /* 아래로 쭉 */
+  }
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
 }
 
 .logo-typo {
@@ -253,17 +277,23 @@ body.theme{
   display:grid; grid-template-columns: 1.2fr .8fr; gap:24px; padding:96px 24px 48px; min-height:100vh;
 }
 .stage{
-  position:relative; background:#fff; border:1px solid rgba(0,0,0,.05);
-  border-radius:var(--radius); padding:24px; box-shadow: var(--shadow);
+  position:relative;
+  background:#fff;
+  border:1px solid rgba(0,0,0,.05);
+  border-radius:var(--radius);
+  padding:24px;
+  box-shadow: var(--shadow);
+
 }
-.stage-base {
-  position: relative;
-  width: 500px;         /* ✅ 더 큰 이미지로 변경 */
-  height: 500px;        /* ✅ 높이도 키움 */
-  margin: 0 auto;
+.stage {
+  display: flex;
+  flex-direction: column;  /* 세로로 쌓임 */
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .stage-bg {
+  margin-top: 100px;
   width: 100%;
   height: auto;
   display: block;
@@ -275,7 +305,7 @@ body.theme{
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
+pointer-events: auto;
 }
 
 .hint {
@@ -300,8 +330,13 @@ body.theme{
 }
 .ghost-btn{background:#fff;color:var(--ink);}      /* Reset */
 .solid-btn{background:var(--brand-green);color:#fff;} /* Done */
-.reset-btn,.done-btn{
+.done-btn{
   position:static;           /* 기존 absolute/fixed 무력화 */
+}
+.reset-btn {
+  position: absolute;
+  top: 16px;
+  left: 16px;
 }
 #btnReset{ order:0; }
 #btnDone { order:1; }
@@ -327,7 +362,7 @@ body.theme{
   display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:12px;
 }
 .ing-btn{
-  width:100%; aspect-ratio:1/1; border:0; border-radius:16px; background:#f5f7f9; cursor:pointer;
+  width:100%; aspect-ratio:1/1; border:0; border-radius:20px; background:#f5f7f9; cursor:pointer;
   display:flex; align-items:center; justify-content:center; box-shadow: var(--shadow);
   transition: transform .15s ease, background .3s;
 }
@@ -357,6 +392,7 @@ body.theme{
 }
 
 .ing-btn:hover .ingredient-label {
+  border-radius: 10px; 
   opacity: 1;
 }
 .form-row{ margin:14px 0; text-align:left }
@@ -438,6 +474,8 @@ body.theme{
 html, body {
   scrollbar-width: none;
   -ms-overflow-style: none;
+  scroll-snap-type: y mandatory;   /* 전체 페이지 스냅 */
+  scroll-behavior: smooth;
 }
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
@@ -508,7 +546,12 @@ body::-webkit-scrollbar {
 
 .ingredient-img {
   position: absolute;
+  z-index: 6;
+  width: 60px;
+  height: 60px;
   transition: transform 0.2s ease;
+  pointer-events: auto;    /* ✅ 각각 클릭 가능 */
+  cursor: grab;            /* 커서 모양 */
 }
 
 .ing-btn {
@@ -649,6 +692,508 @@ body::-webkit-scrollbar {
   margin-bottom: 1rem;
 }
 
+/* style.css 파일에 추가 */
+
+/* --- Category Section Styles --- */
+.article-categories {
+  background: var(--bg); /* 흰색 배경 */
+  padding: 64px 40px;    /* 상하 여백 추가 (header 높이 고려) */
+  align-items: flex-start; /* 상단 정렬 */
+  justify-content: center; /* 중앙 정렬 */
+}
+
+.category-wrap {
+  width: 100%;
+  max-width: 1200px; /* 최대 너비 제한 */
+  margin: 0 auto;
+}
+
+.article-categories h2 {
+  font-size: 2.2rem;
+  margin-bottom: 8px;
+}
+
+.btn-all-articles {
+  float: right;
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 600;
+  padding: 8px 16px;
+  border: 1px solid var(--muted);
+  border-radius: 999px;
+  transform: translateY(-50px); /* h2 옆에 배치하기 위해 조정 */
+  transition: background .2s;
+}
+.btn-all-articles:hover {
+  background: var(--brand-yellow);
+}
+
+.category-grid {
+  clear: both; /* float 해제 */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 3열 그리드 */
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.category-card {
+  display: block;
+  position: relative;
+  height: 450px; /* 카드 높이 고정 */
+  border-radius: var(--radius);
+  overflow: hidden;
+  text-decoration: none;
+  color: #fff;
+  box-shadow: var(--shadow);
+}
+
+.category-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 이미지가 카드를 꽉 채우도록 */
+  transition: transform 0.4s ease-out;
+}
+
+.category-card:hover img {
+  transform: scale(1.05); /* 마우스 오버 시 이미지 확대 효과 */
+}
+
+.card-content {
+  position: absolute;
+  inset: 0;
+  padding: 24px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 40%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.card-tag {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.card-content h3 {
+  font-size: 2rem;
+  margin: 0 0 8px;
+  font-weight: 800;
+}
+
+.card-content p {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin: 0;
+}
+
+/* style.css 파일에 추가 */
+
+/* --- Team Section Styles --- */
+.team-section {
+  background: #f7f7f7; /* 배경색: 밝은 회색 */
+  padding: 64px 24px;
+  flex-direction: column; /* 세로 정렬 */
+  justify-content: center; /* 세로 중앙 정렬 */
+  align-items: center;
+}
+
+.team-container {
+  width: 100%;
+  max-width: 1200px;
+  text-align: center;
+}
+
+.team-title {
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: #333;
+  margin-bottom: 50px;
+}
+
+.team-title .highlight {
+  color: var(--brand-yellow); /* 강조색 (노란색) */
+  font-weight: 700;
+  margin: 0 5px;
+}
+
+.team-title small {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--muted);
+  font-weight: 400;
+  margin-top: 5px;
+}
+
+.team-grid {
+  display: flex;
+  justify-content: center; /* 카드 중앙 정렬 */
+  gap: 30px; /* 카드 사이 간격 */
+  width: 100%;
+}
+
+.team-card {
+  flex-basis: 300px; /* 카드 기본 너비 설정 */
+  flex-grow: 0;
+  flex-shrink: 1;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+  border-radius: 4px;
+}
+
+.card-photo {
+  position: relative;
+  overflow: hidden;
+  /* 이미지가 원형으로 보일 수 있도록 컨테이너를 원형으로 만들고 싶다면, 
+     이미지 대신 이 컨테이너에 border-radius: 50%를 적용합니다. */
+}
+
+.card-photo img {
+  width: 100%;
+  height: auto;
+  display: block;
+  /* 이미지를 사각형 테두리에 맞춰 크롭하려면 object-fit: cover; height를 지정합니다. */
+}
+
+.card-info {
+  padding: 20px 10px;
+  text-align: center;
+}
+
+.card-info h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 5px;
+}
+
+.card-info .role {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin: 0 0 15px;
+}
+
+.social-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 1rem;
+  margin: 0 8px;
+  transition: color 0.2s;
+}
+
+.social-links a:hover {
+  color: var(--brand-green); /* 호버 시 브랜드 색상 적용 */
+}
+
+
+/* style.css 파일에 추가 */
+
+/* --- Dark Footer (Alecta Layout) --- */
+.site-footer-dark {
+  background: #191624; /* 어두운 배경색 */
+  color: #fff;
+  padding: 80px 40px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4열 그리드 */
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-col h4 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+  color: #fff;
+}
+
+.footer-logo {
+  font-size: 1.5rem !important;
+  font-weight: 700;
+}
+
+/* 로고의 노란색 점 */
+.footer-logo .dot {
+  color: var(--brand-yellow);
+}
+
+.footer-desc, address {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #b3b3b3; /* 밝은 회색 텍스트 */
+  font-style: normal;
+}
+
+address a {
+  color: #b3b3b3;
+  text-decoration: none;
+}
+
+/* Links Column */
+.col-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.col-links li {
+  margin-bottom: 12px;
+  padding-left: 12px;
+  position: relative;
+  font-size: 0.9rem;
+}
+
+/* 노란색 불릿 포인트 */
+.col-links li:before {
+  content: "•";
+  color: var(--brand-yellow);
+  position: absolute;
+  left: 0;
+}
+
+.col-links a {
+  color: #b3b3b3;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.col-links a:hover {
+  color: var(--brand-yellow);
+}
+
+/* Twitter Feed Column */
+.tweet-item {
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #b3b3b3;
+}
+
+.tweet-item p a {
+  color: var(--brand-yellow); /* 트위터 링크 강조 */
+  text-decoration: none;
+}
+
+.tweet-time {
+  display: block;
+  font-size: 0.8rem;
+  color: #555360; /* 어두운 시간 텍스트 */
+  margin-top: 4px;
+}
+
+/* Offices Column (Map Placeholder) */
+.col-offices p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #b3b3b3;
+}
+
+/* SNAP 4 : DIGITAL PRODUCTS & BRANDS  ------------------------ */
+.services-section{
+  background:#ffffff;
+  color:var(--ink);
+  flex-direction:column;          /* snap-section이 flex라서 방향만 세로로 */
+  justify-content:flex-start;
+  align-items:stretch;
+  padding-top:64px;
+}
+
+.services-wrapper{
+  width:100%;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+}
+
+/* 상단 흰 배경 영역 */
+.services-intro{
+  text-align:center;
+  padding:60px 24px 80px;
+}
+
+.services-title{
+  font-size:2.2rem;
+  font-weight:700;
+  margin-bottom:16px;
+}
+
+.services-subtitle{
+  max-width:640px;
+  margin:0 auto;
+  font-size:0.95rem;
+  line-height:1.7;
+  color:var(--muted);
+}
+
+.services-grid{
+  margin-top:60px;
+  display:flex;
+  justify-content:center;
+  gap:60px;
+  flex-wrap:wrap;
+}
+
+.services-feature{
+  min-width:250px;
+  text-align:center;
+}
+
+.services-icon{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  border:1px solid #e1e4e8;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 16px;
+  font-size:1.5rem;
+}
+
+.services-label-en{
+  font-size:0.9rem;
+  color:var(--muted);
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+}
+
+.services-label-ko{
+  font-size:0.85rem;
+  font-weight:600;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  margin-top:4px;
+}
+
+/* 하단 검은 배경 영역 */
+.services-dark{
+  background:#111111;
+  color:#ffffff;
+  padding:80px 24px;
+}
+
+.services-dark-inner{
+  max-width:1200px;
+  margin:0 auto;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:80px;
+}
+
+.services-copy h3{
+  font-size:1.8rem;
+  margin:0 0 16px;
+}
+
+.services-copy p{
+  max-width:420px;
+  font-size:0.95rem;
+  line-height:1.7;
+  color:#e0e0e0;
+  margin:0 0 32px;
+}
+
+.services-cta{
+  margin-top:4px;
+}
+
+/* Brand 로고들 */
+.brand-logos{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0,1fr));
+  gap:24px 40px;
+  align-content:flex-start;
+  margin-top: 20px;
+}
+
+.brand-logo{
+  font-size:0.9rem;
+  opacity:0.85;
+}
+
+.brand-logos img {
+  width: 120px;         /* 공통 너비 */
+  height: 60px;         /* 공통 높이 */
+  object-fit: contain;  /* 비율 유지하며 박스 안에 맞춤 */
+  display: block;
+  opacity: 0.8;
+  filter: grayscale(100%);
+  transition: opacity 0.3s, filter 0.3s;
+}
+
+/* 반응형 조절 */
+@media (max-width: 900px){
+  .services-dark-inner{
+    flex-direction:column;
+    gap:40px;
+  }
+
+  .services-grid{
+    gap:32px;
+  }
+
+  .brand-logos{
+    grid-template-columns:repeat(2, minmax(0,1fr));
+  }
+}
+
+
+/* --- Responsive adjustments for footer --- */
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr); /* 태블릿에서 2열 */
+  }
+}
+
+@media (max-width: 600px) {
+  .site-footer-dark {
+    padding: 60px 20px;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr; /* 모바일에서 1열 */
+    gap: 30px;
+  }
+}
+
+/* --- Responsive (모바일/태블릿) --- */
+@media (max-width: 768px) {
+  .team-grid {
+    flex-direction: column; /* 모바일에서 수직으로 정렬 */
+    align-items: center;
+    gap: 20px;
+  }
+  .team-card {
+    max-width: 300px; /* 모바일에서도 카드 최대 너비 유지 */
+  }
+}
+
+/* --- Responsive Layout (모바일/태블릿) --- */
+@media (max-width: 1024px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr); /* 태블릿에서 2열 */
+    gap: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .category-grid {
+    grid-template-columns: 1fr; /* 모바일에서 1열 */
+  }
+  .article-categories {
+    padding: 40px 24px;
+  }
+}
+
 /* Utilities & Animations */
 @keyframes floatUp{ to{ transform: translateY(0) scale(1); opacity:1 } }
 @keyframes titleUp{ to{ transform: translateY(0); opacity:1 } }
@@ -657,6 +1202,6 @@ body::-webkit-scrollbar {
 @keyframes pulse{ 0%,100%{ opacity:.35; transform:translateX(-50%) translateY(0) } 50%{ opacity:.8; transform:translateX(-50%) translateY(-4px) } }
 
 .snap-section.intro {
-  padding-top: 0;     /* ✅ 헤더 공간 제거 */
-  margin-top: -64px;  /* ✅ 헤더 높이만큼 위로 당김 */
+  padding-top: 64px;  /* 다른 섹션과 동일하게 */
+  margin-top: 0;      /* 마이너스 마진 제거 */
 }
