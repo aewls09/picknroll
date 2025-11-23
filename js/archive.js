@@ -80,7 +80,7 @@ function openDetail(id){
 
   document.getElementById('arcTitle').textContent = rec.name || '레시피 상세';  // ✅
 
-  arcImage.src = rec.thumb; 
+  arcImage.src = 'img/김밥.png';
   arcImage.alt = rec.name || '완성 썸네일';
 
   arcIngredients.innerHTML = '';
@@ -120,6 +120,7 @@ function deleteCurrent(){
 
 document.addEventListener('DOMContentLoaded', ()=>{
   render();
+  updateFilterBadge();
 
    // === 필터 UI 핸들러 ===
   const filterModal = document.getElementById('filterModal');
@@ -134,8 +135,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   document.getElementById('rice-white').checked = filterState.rice.has('white');
   document.getElementById('rice-brown').checked = filterState.rice.has('brown');
-const whiteBox = document.getElementById('rice-white');
-const brownBox = document.getElementById('rice-brown');
+  const whiteBox = document.getElementById('rice-white');
+  const brownBox = document.getElementById('rice-brown');
 
     // 재료 9개
     const ingChecks = Array.from(document.querySelectorAll('#ingFilterGrid .chip-check'));
