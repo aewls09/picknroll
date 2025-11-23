@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Pick&Roll</title>
   <link rel="stylesheet" href="css/style.css"/>
-  <script defer src="js/builder.js"></script>
 </head>
 <body class="theme">
   <header class="site-header">
@@ -22,12 +21,13 @@
     <section class="stage">
       <button class="ghost-btn reset-btn" id="btnReset" aria-label="Reset">Reset</button>   
 
-      <!-- 베이스: 김 + 밥 (SVG) -->
-  <div class="stage-base">
-    <img id="riceBackground" src="img/bab.png.png" alt="밥 배경" class="stage-bg" />
+      <div class="stage-base">
+    <img id="riceBackground" src="img/밥.png" alt="밥 배경" class="stage-bg" />
     <div id="stack" class="stack"></div>
   </div>
-    <p class="hint">원하는 재료 버튼을 오른쪽에서 클릭하세요. 같은 재료도 여러 번 쌓을 수 있어요.</p>
+    <p class="hint">원하는 재료 버튼을 오른쪽에서 클릭하세요. 같은 재료도 여러 번 쌓을 수 있어요.
+      <br>tip! 재료를 10개 추가한 후, 원하는 위치로 재료를 옮길 수 있어요.
+    </p>
     </section>
 
 <aside class="ingredients-panel">
@@ -42,7 +42,7 @@
   <div class="modal-backdrop"></div>
   <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="riceTitle">
     <h3 id="riceTitle">밥을 선택해 주세요</h3>
-    <p class="modal-note" style="margin-top:-6px">선택 전에는 배경을 클릭할 수 없어요.</p>
+    <p class="modal-note" style="margin-top:-6px">선택 전에는 재료를 선택할 수 없어요.</p>
 
     <div class="choice-grid">
       <!-- A: 쌀밥 -->
@@ -68,21 +68,24 @@
     <button class="modal-close" id="modalClose" aria-label="닫기">×</button>
     <h3 id="doneTitle">나만의 김밥 완성!</h3>
 
-    <!-- ✅ 캔버스 대신 이미지 -->
-    <img id="resultImage" class="result-image" src="" alt="완성된 김밥" />
+    <img id="resultImage" class="result-image" alt="완성된 김밥" />
 
     <div class="form-row">
       <label for="recipeName" class="form-label">레시피 이름</label>
-      <input type="text" id="recipeName" class="form-input" placeholder="예: 점심 김밥 #1" maxlength="40" />
+      <input type="text" id="recipeName" class="form-input" placeholder="예: 픽앤롤정식" maxlength="40" />
     </div>
 
     <div class="modal-actions">
       <button id="saveRecipe" class="solid-btn">레시피 저장</button>
     </div>
 
-    <p class="modal-note">저장하면 ARC에서 썸네일과 재료 리스트를 볼 수 있어요.</p>
+    <p class="modal-note">저장하면 ROLL에서 썸네일과 재료 리스트를 볼 수 있어요.</p>
   </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 <canvas id="canvas" width="600" height="400" style="display: none;"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="js/builder.js"></script>
 </body>
 </html>
