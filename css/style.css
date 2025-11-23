@@ -438,7 +438,7 @@ pointer-events: auto;
 /* SUB2: Archive */
 .archive-desc{ color:var(--muted) }
 .archive-grid{
-  margin-top:16px;
+  margin-top:100px;
   display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:24px;
   padding: 0 80px;
 }
@@ -500,31 +500,24 @@ body::-webkit-scrollbar {
 
 /* 제목 + 필터 버튼 가로 정렬 */
 
-.archive-header h1,
-.archive-header h2,
-.archive-header h3 {
-  position: relative;
-  z-index: 2;
-  color: white;
-}
-
 .archive-header {
   width: 100%;
   box-sizing: border-box;
+  height: 40%;
+  padding: 80px 100px 120px; /* 배너 여백 */
 
-  padding: 80px 100px 140px;  /* ⭐ 좌우 100px */
-  
-  background-image: url("../img/배너.png");
+  background-image: url("../img/배너.png"); /* 경로 확인 필수 */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
+  display: flex;
+  align-items: flex-start;   /* 상단 정렬 */
+  justify-content: space-between;  /* 좌측 텍스트 / 우측 버튼 */
+  gap: 40px;
+
   position: relative;
   z-index: 1;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   color: #fff;
 }
 
@@ -532,17 +525,41 @@ body::-webkit-scrollbar {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0,0,0,0.2); /* 텍스트 가독성 ↑ */
   z-index: -1;
 }
 
-.filter-btn{
-  border:0; border-radius:999px; padding:.5rem 1rem; font-weight:700; cursor:pointer;
-  background:#f3f4f6; color:var(--ink); box-shadow:var(--shadow);
+.archive-title {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 50px;
 }
-.filter-btn[aria-pressed="true"]{
-  background: var(--brand-green); color:#fff;
+
+.archive-title h1 {
+  font-size: 38px;
+  font-weight: 700;
+  margin: 0;
 }
+
+.archive-title h3 {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 0;
+  color: #ffffffd5;
+}
+
+.filter-btn {
+  padding: 12px 20px;
+  background: white;
+  border-radius: 8px;
+  color: #333;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  margin-top: 150px;
+}
+
 
 /* 필터 섹션 */
 .filter-section{ text-align:left; margin-top:14px }
