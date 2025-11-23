@@ -6,9 +6,6 @@
   <title>Pick&Roll</title>
   <link rel="stylesheet" href="css/style.css"/>
   <script defer src="js/archive.js"></script>
-  <style>
-    .p { padding: 0 80px; }
-  </style>
 </head>
 <body class="theme">
   <header class="site-header">
@@ -20,13 +17,15 @@
     </nav>
   </header>
 
-  <main class="archive-main">
-    <div class="archive-header">
-  <h1>Recipe Archive</h1>
-  <button id="filterToggle" class="filter-btn" aria-pressed="false">필터 적용하기</button>
-</div>
-    <p class="archive-desc">MINI GAME에서 저장한 완성본들을 기록하는 페이지 입니다.</p>
+<header class="archive-header">
+  <div class="archive-title">
+    <h1>Recipe Archive</h1>
+    <h3>다양한 레시피를 공유하고, 기록하는 아카이빙 페이지 입니다.</h3>
+  </div>
 
+  <button id="filterToggle" class="filter-btn">필터 적용하기</button>
+</header>
+  <main class="archive-main">
     <div id="archiveGrid" class="archive-grid" aria-label="저장된 레시피 목록">
       <!-- JS에서 카드 렌더링 -->
     </div>
