@@ -80,8 +80,8 @@ function openDetail(id){
 
   document.getElementById('arcTitle').textContent = rec.name || '레시피 상세';  // ✅
 
-arcImage.src = 'img/김밥.png';
-arcImage.alt = '완성 썸네일';
+  arcImage.src = rec.thumb; 
+  arcImage.alt = rec.name || '완성 썸네일';
 
   arcIngredients.innerHTML = '';
     if(rec.rice){
